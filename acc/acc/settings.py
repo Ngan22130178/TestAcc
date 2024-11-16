@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*onz9wyyv^&nv7vg4bhya5$_@^5^)jfshidj#m$p=&_xp!tjrj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'yourdomain.com']
 
 
 # Application definition
@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework', 'allauth', 'allauth.account', 'allauth.socialaccount', 'accounts',
+    'rest_framework', 'allauth', 
+    'allauth.account', 
+    'allauth.socialaccount', 
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -49,10 +52,22 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 ]
+AUTHENTICATION_BACKENDS = ('allauth.account.auth_backends.AuthenticationBackend', ) 
+SITE_ID = 1 
+ACCOUNT_EMAIL_REQUIRED = True 
+ACCOUNT_EMAIL_VERIFICATION = "mandatory" 
+MAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ROOT_URLCONF = 'acc.urls'
-
+# Cấu hình messages 
+from django.contrib.messages import constants as message_constants 
+MESSAGE_TAGS = { message_constants.DEBUG: 'debug',
+                message_constants.INFO: 'info', 
+                message_constants.SUCCESS: 'success',
+                message_constants.WARNING: 'warning', 
+                message_constants.ERROR: 'danger', }
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -70,11 +85,7 @@ TEMPLATES = [
     },
 ]
 
-AUTHENTICATION_BACKENDS = ('allauth.account.auth_backends.AuthenticationBackend', ) 
-SITE_ID = 1 
-ACCOUNT_EMAIL_REQUIRED = True 
-ACCOUNT_EMAIL_VERIFICATION = "mandatory" 
-MAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 WSGI_APPLICATION = 'acc.wsgi.application'
 
